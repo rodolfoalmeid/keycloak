@@ -32,16 +32,9 @@ spec:
   capacity:
    storage: 8Gi
   accessModes:
-   -ReadWriteOnce
-  local:
-   path: /mnt/
-
-volumePermissions:
-  enabled: true
-
-postgresql:
-  volumePermissions:
-     enabled: true
+   - ReadWriteOnce
+  hostPath:
+    path: "/mnt/"
 ```
 
 3 - Helm show values
@@ -53,22 +46,25 @@ helm show values codecentric/keycloak --version=17.0.3 > ~/Documents/keycloak-te
 4 - Edit Helm Chart
 
 ```yaml
+n// change the namespace
+ 
 namespace: keycloak
-
+ 
 ---
-tag: "16.1.1"
-
+// define a tag, which is the desired Keycloak version
+image:
+  # The Keycloak image repository
+  repository: docker.io/jboss/keycloak
+  # Overrides the Keycloak image tag whose default is the chart appVersion
+  tag: "16.1.1"  
+ 
 ---
+// Change the service type to NodePort
 service:
-  # Annotations for headless and HTTP Services
-  annotations: {}
-  # Additional labels for headless and HTTP Services
-  labels: {}
-  # key: value
-  # The Service type
   type: NodePort
-
+ 
 ---
+// Add the following variables
 extraEnv: |
   - name: KEYCLOAK_USER
     value: admin
@@ -76,12 +72,40 @@ extraEnv: |
     value: admin
   - name: KEYCLOAK_FRONTEND_URL
     value: "https://ralmeida-keycloak.do.support.rancher.space/auth/"
+ 
+---
+// Add volume permission to keycloak
+volumePermissions:
+  enabled: true
+ 
+---
+// Add volume permission to Postgresql
+postgresql:
+  volumePermissions:
+     enabled: true
 ```
 
 5 - Install keycloak
 
 ```yaml
 helm upgrade --install keycloak codecentric/keycloak --set volumePermissions.enabled=true --set postgresql.volumePermissions.enabled=true --values codecentric.yaml
+```
+After installation is completed verify if pods are running and the PV and PVC status
+```
+╰$ k -n keycloak get pods
+NAME                    READY   STATUS    RESTARTS   AGE
+keycloak-0              1/1     Running   0          14m
+keycloak-postgresql-0   1/1     Running   0          23m
+ 
+ 
+╰$ k get pv             
+NAME                         CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                                 STORAGECLASS   REASON   AGE
+data-keycloak-postgresql-0   8Gi        RWO            Retain           Bound    keycloak/data-keycloak-postgresql-0                           40m
+ 
+ 
+╰$ k -n keycloak get pvc
+NAME                         STATUS   VOLUME                       CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+data-keycloak-postgresql-0   Bound    data-keycloak-postgresql-0   8Gi        RWO                           21m
 ```
 
 obs: to uninstall keycloak
