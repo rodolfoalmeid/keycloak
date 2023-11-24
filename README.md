@@ -193,3 +193,28 @@ If using self-signed certificates to a certificate signed by a non-trusted CA yo
 ```
 |ERRO|CTL|rest.validateOIDCServer: Failed to discover OpenID Connect endpoints - error=Get "https://xxxxx/.well-known/openid-configuration": x509: certificate signed by unknown authority
 ```
+[!NOTE] Instead of creating a trusted signed certificate, you can disable SSL/HTTPS by following the steps below:
+
+In step #6 - How to Install Keycloak,  it is required to modify the variable KEYCLOAK_FRONTEND_URL and add two other variables to disable HTTPS and enable HTTP.
+```
+extraEnv: |
+  - name: KEYCLOAK_USER
+    value: admin
+  - name: KEYCLOAK_PASSWORD
+    value: admin
+ 
+// Replace https by http. 
+  - name: KEYCLOAK_FRONTEND_URL
+    value: "http://ralmeida2-keycloak.do.support.rancher.space/auth/"
+ 
+// Add the following variables
+  - name: KC_HTTPS_ENABLED
+    value: "false"
+  - name: KC_HTTP_ENABLED
+    value: "true"
+```
+
+After updating the Helm values.yaml, execute the command below.
+```
+helm upgrade --install keycloak codecentric/keycloak --namespace keycloak --values codecentric.yaml
+```
