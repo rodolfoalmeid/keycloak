@@ -85,3 +85,7 @@ helm upgrade --install keycloak codecentric/keycloak --set volumePermissions.ena
 ```
 
 obs: to uninstall keycloak
+
+```yaml
+helm uninstall keycloak
+```
