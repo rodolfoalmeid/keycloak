@@ -193,7 +193,8 @@ If using self-signed certificates to a certificate signed by a non-trusted CA yo
 ```
 |ERRO|CTL|rest.validateOIDCServer: Failed to discover OpenID Connect endpoints - error=Get "https://xxxxx/.well-known/openid-configuration": x509: certificate signed by unknown authority
 ```
-[!NOTE] Instead of creating a trusted signed certificate, you can disable SSL/HTTPS by following the steps below:
+[!NOTE] 
+Instead of creating a trusted signed certificate, you can disable SSL/HTTPS by following the steps below:
 
 In step #6 - How to Install Keycloak,  it is required to modify the variable KEYCLOAK_FRONTEND_URL and add two other variables to disable HTTPS and enable HTTP.
 ```
