@@ -113,3 +113,83 @@ obs: to uninstall keycloak
 ```yaml
 helm uninstall keycloak
 ```
+
+## Keycloak Configuration
+
+1- Create a new Realm
+In Keycloak, create a new Realm by moving the cursor over Master on the top left menu and clicking Add realm.
+Choose a name
+Enable ON
+Click the Create button
+
+After creating the new realm, you will see that the name on the top left menu will change from Master to the name you choose in the realm creation if don not, switch to the realm you just created.
+
+2- Create a new OIDC client. 
+
+Select Clients on the left menu and click the Create button on the right side of the window. Configure with the settings below.
+The Client ID is a name that will be used in the NeuVector configuration.
+Client Protocol = openid-connect
+Root URL = NeuVector OpenID Connect Redirect URI
+Access NeuVector UI and go to Settings > OpenID Connect Settings
+At the top of the page, you will find the OpenID Connect Redirect URI
+click on the button Copy to Clipboard
+Go back to the Keycloak webpage and paste it into the Root URL field.
+Save the configuration
+
+3- Client Settings Tab
+
+After saving the configuration, you will be redirected to the client configuration in the Settings tab. Configure with the settings below.
+Access Type = confidential
+
+4- Client Mappers tab
+
+In the new OIDC client, create Mappers to expose the user's fields. Select Mappers tab and configure with the settings below.
+Click on the Creat button on the right side of the page.
+Choose a Name for your Mapper.
+Mapper Type = Group Membership
+Token Claim Name = groups
+Full group path = OFF
+Add to ID token = OFF
+Add to access token = OFF
+Add to userinfo = ON
+Save the configuration
+
+5- Information required to configure NeuVector
+
+Endpoint configuration
+Select Realm Settings on the left menu.
+On the Endpoints field, click on OpenID Endpoints Configuration. You will be redirected to another page.
+Copy the URL in the first line, right after issuer, without quotes.
+
+Client ID
+Select Clients on the left menu and take note of the Client ID created. Same from step 2.
+
+Secret
+Select Clients on the left menu and select the Client ID created.
+Select the Credentials tab.
+Copy the Secret field.
+
+### Configuring Keycloak in NeuVector
+
+OpenID configuration
+Access the NeuVector UI and select Settings on the left menu.
+Identity Provider Issuer = Copy the URL from the Keycloak issuer from step 5.
+Client ID = Copy the Client ID name created in step 2.
+Client Secret = Copy the Secret collected in step 5.
+Group Claim = groups
+Default Role = None
+Add the groups created inside Keycloak to authorize the users to access the NeuVector UI.
+Select Enable
+Submit the configuration
+
+You should see a green pop-up at the NeuVector bottom page showing the message "Server Saved!"
+In your next login, you should see a "Login with OpenID" option in the NeuVector UI. Selecting this option will redirect to the Keyclaok webpage to authenticate the user. If the authentication works and the user is part of an authorized group, you will be redirected to the NeuVector UI.
+
+### When does Keycloak require SSL?
+By default, Keycloak requires SSL for external requests. This means that HTTPS requires a valid certificate and signed by a trusted Certificate Authority.
+You can use Let`s Encrypt, GoDaddy, and many other trusted Certificate Authorities to create, issue, and sign your certificate. Using self-signed certificates or certificates signed by internal Certificate Authorities is currently not supported.
+If using self-signed certificates to a certificate signed by a non-trusted CA you should see the following error in the controller pods.
+
+```
+|ERRO|CTL|rest.validateOIDCServer: Failed to discover OpenID Connect endpoints - error=Get "https://xxxxx/.well-known/openid-configuration": x509: certificate signed by unknown authority
+```
