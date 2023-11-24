@@ -118,9 +118,9 @@ helm uninstall keycloak
 
 1- Create a new Realm
 In Keycloak, create a new Realm by moving the cursor over Master on the top left menu and clicking Add realm.
-Choose a name
-Enable ON
-Click the Create button
++ Choose a name
++ Enable ON
++ Click the Create button
 
 After creating the new realm, you will see that the name on the top left menu will change from Master to the name you choose in the realm creation if don not, switch to the realm you just created.
 
@@ -128,13 +128,13 @@ After creating the new realm, you will see that the name on the top left menu wi
 
 Select Clients on the left menu and click the Create button on the right side of the window. Configure with the settings below.
 The Client ID is a name that will be used in the NeuVector configuration.
-Client Protocol = openid-connect
-Root URL = NeuVector OpenID Connect Redirect URI
-Access NeuVector UI and go to Settings > OpenID Connect Settings
-At the top of the page, you will find the OpenID Connect Redirect URI
-click on the button Copy to Clipboard
-Go back to the Keycloak webpage and paste it into the Root URL field.
-Save the configuration
++ Client Protocol = openid-connect
++ Root URL = NeuVector OpenID Connect Redirect URI
++ Access NeuVector UI and go to Settings > OpenID Connect Settings
++ At the top of the page, you will find the OpenID Connect Redirect URI
++ click on the button Copy to Clipboard
++ Go back to the Keycloak webpage and paste it into the Root URL field.
++ Save the configuration
 
 3- Client Settings Tab
 
@@ -144,30 +144,30 @@ Access Type = confidential
 4- Client Mappers tab
 
 In the new OIDC client, create Mappers to expose the user's fields. Select Mappers tab and configure with the settings below.
-Click on the Creat button on the right side of the page.
-Choose a Name for your Mapper.
-Mapper Type = Group Membership
-Token Claim Name = groups
-Full group path = OFF
-Add to ID token = OFF
-Add to access token = OFF
-Add to userinfo = ON
-Save the configuration
++ Click on the Creat button on the right side of the page.
++ Choose a Name for your Mapper.
++ Mapper Type = Group Membership
++ Token Claim Name = groups
++ Full group path = OFF
++ Add to ID token = OFF
++ Add to access token = OFF
++ Add to userinfo = ON
++ Save the configuration
 
 5- Information required to configure NeuVector
 
 Endpoint configuration
-Select Realm Settings on the left menu.
-On the Endpoints field, click on OpenID Endpoints Configuration. You will be redirected to another page.
-Copy the URL in the first line, right after issuer, without quotes.
++ Select Realm Settings on the left menu.
++ On the Endpoints field, click on OpenID Endpoints Configuration. You will be redirected to another page.
++ Copy the URL in the first line, right after issuer, without quotes.
 
 Client ID
 Select Clients on the left menu and take note of the Client ID created. Same from step 2.
 
-Secret
-Select Clients on the left menu and select the Client ID created.
-Select the Credentials tab.
-Copy the Secret field.
++ Secret
++ Select Clients on the left menu and select the Client ID created.
++ Select the Credentials tab.
++ Copy the Secret field.
 
 ### Configuring Keycloak in NeuVector
 
