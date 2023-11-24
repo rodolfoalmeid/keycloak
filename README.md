@@ -171,16 +171,16 @@ Copy the Secret field.
 
 ### Configuring Keycloak in NeuVector
 
-OpenID configuration
-Access the NeuVector UI and select Settings on the left menu.
-Identity Provider Issuer = Copy the URL from the Keycloak issuer from step 5.
-Client ID = Copy the Client ID name created in step 2.
-Client Secret = Copy the Secret collected in step 5.
-Group Claim = groups
-Default Role = None
-Add the groups created inside Keycloak to authorize the users to access the NeuVector UI.
-Select Enable
-Submit the configuration
++ OpenID configuration
++ Access the NeuVector UI and select Settings on the left menu.
++ Identity Provider Issuer = Copy the URL from the Keycloak issuer from step 5.
++ Client ID = Copy the Client ID name created in step 2.
++ Client Secret = Copy the Secret collected in step 5.
++ Group Claim = groups
++ Default Role = None
++ Add the groups created inside Keycloak to authorize the users to access the NeuVector UI.
++ Select Enable
++ Submit the configuration
 
 You should see a green pop-up at the NeuVector bottom page showing the message "Server Saved!"
 In your next login, you should see a "Login with OpenID" option in the NeuVector UI. Selecting this option will redirect to the Keyclaok webpage to authenticate the user. If the authentication works and the user is part of an authorized group, you will be redirected to the NeuVector UI.
